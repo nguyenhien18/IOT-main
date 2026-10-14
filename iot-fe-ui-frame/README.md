@@ -53,15 +53,16 @@ Chi tiết từng file nằm trong `PROJECT_STRUCTURE.txt`.
 Mỗi chức năng có page riêng. State, hàm xử lý, bộ lọc và cách hiển thị dòng nằm ngay
 trong page của hai trang lịch sử để dễ theo dõi.
 `overview/components` chứa `MetricCard` và `SensorChart` dùng cho Dashboard.
-Profile có sẵn thông tin trong `PROFILE`, liên kết trong `PROFILE_LINKS` và hai component nhỏ
-`InfoField`, `ProjectLink` ngay trong `features/profile/ProfilePage.jsx`.
+Profile lấy thông tin người dùng và URL dự án qua `GET /api/profile` khi dùng backend.
+`PROFILE_LINKS` chỉ giữ nhãn/mô tả liên kết; `InfoField` và `ProjectLink` nằm trong
+`features/profile/ProfilePage.jsx`.
 `components/common/DataTable.jsx` chứa `DataTable`, `DataTableHead`, `StatusBadge`, `EmptyState`, `TableFooter`.
 Menu, nhãn và tiêu đề nằm trong `config/navigation.js`.
 
 Luồng chạy: `main.jsx` → `App.jsx` → `AuthProvider` + `AppRoutes` →
 `ProtectedRoute` → `DashboardLayout` → page tương ứng trong `features`.
 Các trang dữ liệu gọi `api/apiService.js`; service chọn backend hoặc `mocks/iotData.js` theo biến môi trường.
-Riêng Profile đọc thông tin viết sẵn trong file, không gọi API.
+Trong chế độ mock, Profile đọc dữ liệu mẫu từ `mocks/iotData.js`.
 Danh sách route nằm ngay trong `App.jsx`, tương tự mẫu. Phần đăng nhập và API là chức năng
 riêng của dự án này nên vẫn có `features/auth`, `context`, `hooks` và `api`.
 
@@ -86,10 +87,11 @@ riêng của dự án này nên vẫn có `features/auth`, `context`, `hooks` v�
   Đổi thứ tự hoặc số dòng sẽ về trang đầu và giữ bộ lọc đã áp dụng.
 - Bảng cảm biến mặc định 5 dòng, có lựa chọn 5/10/20 giống dự án mẫu.
   Bảng lịch sử điều khiển vẫn hỗ trợ 5/10/20/50; đổi số dòng quay về trang đầu.
-- Profile: hiển thị thông tin cố định và các mục GitHub, Figma, Postman, PDF báo cáo.
-  Sửa `PROFILE` và `PROFILE_LINKS` ở đầu `src/features/profile/ProfilePage.jsx` để thay nội dung.
-  Link chưa điền sẽ hiển thị "Chưa có liên kết". Ảnh chọn lên chỉ xem tạm;
-  tải lại trang sẽ dùng `PROFILE.avatarUrl`. Profile không đọc/ghi `localStorage`.
+- Profile: hiển thị họ tên, mã sinh viên, lớp, email và các URL GitHub, Figma,
+  Postman, PDF báo cáo từ `GET /api/profile`. Link chưa điền sẽ hiển thị
+  "Chưa có liên kết". Khi chọn ảnh, frontend gửi `PUT /api/profile` để lưu
+  `avatarUrl` vào backend; tải lại trang sẽ đọc ảnh đã lưu. Profile không
+  đọc/ghi `localStorage` để lưu thông tin cá nhân.
 - Đăng nhập, đăng xuất và chặn truy cập trang chính khi chưa đăng nhập.
 
 URL giữ nguyên: `/`, `/data-sensor`, `/action-history`, `/profile`, `/login`.

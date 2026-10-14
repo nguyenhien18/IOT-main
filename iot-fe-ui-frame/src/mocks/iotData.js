@@ -35,6 +35,23 @@ export const mockDevices = [
   { id: 3, name: 'LED 3', status: 'OFF', createdAt: getPastTime(1440) },
 ]
 
+export const mockProfile = {
+  fullName: 'Nguyễn Văn Hiển',
+  studentCode: 'B23DCCN290',
+  className: 'D23CNPM05',
+  email: 'hiennv.b23cn290@stu.ptit.edu.vn',
+  githubUrl: 'https://github.com/nguyenhien18/iot-fe.git',
+  figmaUrl: 'https://www.figma.com/design/4nNJZAd7aQJlUF5nPH3ZJ9/IOT-Smart-Room?node-id=0-1&m=dev&t=OQ7D4Mf6K2aCT137-1',
+  postmanUrl: 'https://www.postman.com/',
+  reportUrl: 'https://drive.google.com/file/d/1Pa4hX6-lgj9BmI9jQQcDOjC509tLMcCM/view?usp=sharing',
+  avatarUrl: '',
+}
+
+export function updateMockProfile(changes) {
+  Object.assign(mockProfile, changes)
+  return { ...mockProfile }
+}
+
 const sensorNames = ['Temperature', 'Humidity', 'Light']
 const baseValues = { Temperature: 29.5, Humidity: 68, Light: 520 }
 

@@ -81,6 +81,10 @@
   color: #b3444d;
 }
 
+.profile-preview-card .profile-avatar-message.success {
+  color: #15803d;
+}
+
 .class-badge {
   padding: 4px 9px;
   border-radius: 5px;

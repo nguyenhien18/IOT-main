@@ -5,8 +5,10 @@ import {
   mockControlDevice,
   mockDevices,
   mockLatestSensors,
+  mockProfile,
   mockSensorData,
   mockSensors,
+  updateMockProfile,
 } from '../mocks/iotData'
 
 const useMock = String(import.meta.env.VITE_USE_MOCK ?? 'true') === 'true'
@@ -61,6 +63,24 @@ export async function loginApi(payload) {
   }
 
   throw new Error('INVALID_CREDENTIALS')
+}
+
+export async function getProfileApi() {
+  if (!useMock) {
+    return (await axiosClient.get('/api/profile')).data
+  }
+
+  await delay()
+  return { ...mockProfile }
+}
+
+export async function updateProfileApi(payload) {
+  if (!useMock) {
+    return (await axiosClient.put('/api/profile', payload)).data
+  }
+
+  await delay()
+  return updateMockProfile(payload)
 }
 
 export async function getLatestSensorsApi() {
