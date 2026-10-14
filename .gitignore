@@ -21,3 +21,7 @@ mosquitto/passwords
 # Duplicates and generated documents available from source files
 /postman.zip
 /Tai_lieu_API_IoT_Room_Monitoring.docx
+
+# Local API collection and document generator
+/postman/
+/tools/
