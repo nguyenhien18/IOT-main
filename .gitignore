@@ -1,0 +1,23 @@
+# Local credentials and machine-specific configuration
+**/.env
+**/.env.*
+!**/.env.example
+Aduino/secrets.h
+Backend/secrets-local.properties
+mosquitto/passwords
+
+# Generated dependencies, builds, editor files, and logs
+**/node_modules/
+**/target/
+**/dist/
+**/coverage/
+**/.idea/
+**/.vscode/
+**/.git-preserved/
+**/*.iml
+**/*.log
+**/.DS_Store
+
+# Duplicates and generated documents available from source files
+/postman.zip
+/Tai_lieu_API_IoT_Room_Monitoring.docx

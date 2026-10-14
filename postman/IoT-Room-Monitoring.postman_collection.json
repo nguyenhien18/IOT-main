@@ -1,0 +1,614 @@
+{
+  "info": {
+    "_postman_id": "f03ef8a8-183a-4b72-a749-2ba743d30ac3",
+    "name": "IoT Room Monitoring API",
+    "description": "Bo request kiem thu REST API cho du an IoT Room Monitoring. Chay request Login truoc de tu dong luu JWT vao environment.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{jwtToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "jwtToken",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "event": [
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "pm.test('Response la JSON', function () {",
+          "    pm.response.to.be.json;",
+          "});"
+        ]
+      }
+    }
+  ],
+  "item": [
+    {
+      "name": "00 - Authentication",
+      "item": [
+        {
+          "name": "Login - Lay JWT",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Dang nhap thanh cong', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    const body = pm.response.json();",
+                  "    pm.expect(body.result).to.have.property('token');",
+                  "});",
+                  "",
+                  "const body = pm.response.json();",
+                  "if (body.result && body.result.token) {",
+                  "    pm.collectionVariables.set('jwtToken', body.result.token);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"admin\",\n  \"password\": \"123456\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/auth/login",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "auth",
+                "login"
+              ]
+            },
+            "description": "Dang nhap va tu dong luu JWT vao bien jwtToken cua environment."
+          }
+        }
+      ]
+    },
+    {
+      "name": "01 - Sensors",
+      "item": [
+        {
+          "name": "Lay danh sach cam bien",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/sensors",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "sensors"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Lay chi tiet cam bien",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/sensors/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "sensors",
+                "1"
+              ]
+            },
+            "description": "Lay thong tin cua mot cam bien theo ID. Doi so 1 tren URL de test ID khac."
+          }
+        },
+        {
+          "name": "Lay so do moi nhat",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/sensors/latest",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "sensors",
+                "latest"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "02 - Sensor Data",
+      "item": [
+        {
+          "name": "Lich su cam bien - Tim, loc, sap xep, phan trang",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/data-sensors?page=0&size=10&sort=createdAt,desc",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "data-sensors"
+              ],
+              "query": [
+                {
+                  "key": "sensorId",
+                  "value": "1",
+                  "description": "ID cam bien: 1, 2 hoac 3",
+                  "disabled": true
+                },
+                {
+                  "key": "keyword",
+                  "value": "temperature",
+                  "description": "Tim theo ten cam bien, gia tri hoac thoi gian",
+                  "disabled": true
+                },
+                {
+                  "key": "value",
+                  "value": "28.5",
+                  "description": "Loc theo gia tri chinh xac",
+                  "disabled": true
+                },
+                {
+                  "key": "time",
+                  "value": "14:30",
+                  "description": "HH:mm, HH:mm:ss, DD/MM/YYYY hoac DD/MM/YYYY HH:mm[:ss]",
+                  "disabled": true
+                },
+                {
+                  "key": "from",
+                  "value": "2026-10-07T00:00:00",
+                  "disabled": true
+                },
+                {
+                  "key": "to",
+                  "value": "2026-10-07T23:59:59",
+                  "disabled": true
+                },
+                {
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "key": "size",
+                  "value": "10"
+                },
+                {
+                  "key": "sort",
+                  "value": "createdAt,desc",
+                  "description": "createdAt,desc hoac createdAt,asc"
+                }
+              ]
+            },
+            "description": "Bat/tat cac query parameter tuy theo kich ban can test."
+          }
+        },
+        {
+          "name": "Lay du lieu bieu do",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/data-sensors/chart",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "data-sensors",
+                "chart"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Them mot so do thu cong",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sensorId\": 1,\n  \"value\": 28.5\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/data-sensors",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "data-sensors"
+              ]
+            },
+            "description": "Request nay ghi them du lieu vao MySQL. Bo createdAt de backend dung thoi gian hien tai."
+          }
+        }
+      ]
+    },
+    {
+      "name": "03 - Devices",
+      "item": [
+        {
+          "name": "Lay danh sach LED",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/devices",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "devices"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Bat LED",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"action\": \"ON\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/devices/1/control",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "devices",
+                "1",
+                "control"
+              ]
+            },
+            "description": "Can chay Mosquitto va ESP8266. Backend doi feedback toi da 5 giay."
+          }
+        },
+        {
+          "name": "Tat LED",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"action\": \"OFF\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/devices/1/control",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "devices",
+                "1",
+                "control"
+              ]
+            },
+            "description": "Can chay Mosquitto va ESP8266. Backend doi feedback toi da 5 giay."
+          }
+        },
+        {
+          "name": "Bat tat ca LED",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"action\": \"ON\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/devices/control-all",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "devices",
+                "control-all"
+              ]
+            },
+            "description": "Bat tat ca LED bang mot request. Can chay Mosquitto va ESP8266."
+          }
+        },
+        {
+          "name": "Tat tat ca LED",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"action\": \"OFF\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/devices/control-all",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "devices",
+                "control-all"
+              ]
+            },
+            "description": "Tat tat ca LED bang mot request. Can chay Mosquitto va ESP8266."
+          }
+        }
+      ]
+    },
+    {
+      "name": "04 - Action History",
+      "item": [
+        {
+          "name": "Lich su dieu khien - Tim, loc, sap xep, phan trang",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/actions?page=0&size=10&sort=createdAt,desc",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "actions"
+              ],
+              "query": [
+                {
+                  "key": "deviceId",
+                  "value": "1",
+                  "disabled": true
+                },
+                {
+                  "key": "keyword",
+                  "value": "14:30",
+                  "description": "Tim theo thiet bi, nguoi thuc hien hoac thoi gian",
+                  "disabled": true
+                },
+                {
+                  "key": "action",
+                  "value": "ON",
+                  "description": "ON hoac OFF",
+                  "disabled": true
+                },
+                {
+                  "key": "status",
+                  "value": "SUCCESS",
+                  "description": "SUCCESS, FAILED hoac PROCESSING",
+                  "disabled": true
+                },
+                {
+                  "key": "from",
+                  "value": "2026-10-07T00:00:00",
+                  "disabled": true
+                },
+                {
+                  "key": "to",
+                  "value": "2026-10-07T23:59:59",
+                  "disabled": true
+                },
+                {
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "key": "size",
+                  "value": "10"
+                },
+                {
+                  "key": "sort",
+                  "value": "createdAt,desc",
+                  "description": "createdAt,desc hoac createdAt,asc"
+                }
+              ]
+            },
+            "description": "Bat/tat cac query parameter tuy theo kich ban can test."
+          }
+        },
+        {
+          "name": "Lay chi tiet mot lich su dieu khien",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/actions/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "actions",
+                "1"
+              ]
+            },
+            "description": "Lay mot ban ghi lich su theo ID. Neu ID 1 khong ton tai, lay mot ID tu request danh sach lich su."
+          }
+        }
+      ]
+    },
+    {
+      "name": "05 - Profile",
+      "item": [
+        {
+          "name": "Lay thong tin ca nhan",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/profile",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "profile"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Cap nhat thong tin ca nhan",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fullName\": \"Nguyễn Văn Hiển\",\n  \"studentCode\": \"B23DCCN290\",\n  \"className\": \"D23CNPM05\",\n  \"email\": \"hiennv.b23cn290@stu.ptit.edu.vn\",\n  \"githubUrl\": \"https://github.com/nguyenhien18/iot-fe.git\",\n  \"figmaUrl\": \"https://www.figma.com/\",\n  \"postmanUrl\": \"https://www.postman.com/\",\n  \"reportUrl\": \"\",\n  \"avatarUrl\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/profile",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "profile"
+              ]
+            },
+            "description": "Request nay cap nhat du lieu profile trong MySQL."
+          }
+        }
+      ]
+    }
+  ]
+}

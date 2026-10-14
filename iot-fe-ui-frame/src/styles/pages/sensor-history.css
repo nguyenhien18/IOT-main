@@ -1,0 +1,36 @@
+.sensor-filter {
+  grid-template-columns: minmax(160px, 220px) minmax(220px, 520px) minmax(210px, 230px) auto;
+  align-items: start;
+  justify-content: start;
+}
+
+.sensor-search-control {
+  min-width: 0;
+  display: grid;
+  gap: 6px;
+}
+
+.sensor-time-hint {
+  color: var(--text-muted);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.sensor-load-error {
+  margin: 0;
+  color: #b42318;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+@media (max-width: 900px) {
+  .sensor-filter {
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  }
+}
+
+@media (max-width: 620px) {
+  .sensor-filter {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
